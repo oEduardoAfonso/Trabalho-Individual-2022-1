@@ -1,0 +1,26 @@
+name: Build
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  tests:
+    name: Build Images
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: ci/docker-compose.yml
+
+    steps:
+    - name: Check
+      uses: actions/checkout@v2
+
+    - name: Build database
+      run: docker build ./postgres/
+
+    - name: Build back end
+      run: docker build ./library_back/
+
+    - name: Build fontend
+      run: docker build ./library_front/
